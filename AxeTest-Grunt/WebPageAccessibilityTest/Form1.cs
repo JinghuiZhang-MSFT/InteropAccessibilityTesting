@@ -1,10 +1,12 @@
-﻿using System;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System.Windows.Forms;
-using System.IO;
+using System;
+using System.Data;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
+using System.Xml;
+using System.Collections.Generic;
 
 namespace TDWebPageListGenerator
 {
@@ -22,84 +24,15 @@ namespace TDWebPageListGenerator
         /// </summary>
         private void generatePageList_Click(object sender, EventArgs e)
         {
-            if (tocItemlList.Items[0].ToString().StartsWith("[MS-"))
+            string tdName = Util.webDriver.Title.Split(':')[0];
+            webPageExportingStatusText.Text = "Recording URLs for " + tdName + "...";
+            webPageExportingStatusText.Refresh();
+            using (StreamWriter sw = new StreamWriter(outputPath.Text + "\\" + tdName + ".txt"))
             {
-                foreach (string protocol in tocItemlList.CheckedItems)
+                sw.WriteLine(Util.EntryUrl);
+                foreach (object webpageUrl in tocItemlList.Items)
                 {
-                    webPageExportingStatusText.Text = "Recording web page URLs for " + protocol + "...";
-                    webPageExportingStatusText.Refresh();
-                    using (StreamWriter sw = new StreamWriter(outputPath.Text + "\\" + protocol + ".txt"))
-                    {
-                        IWebElement currentEle = Util.FindElement(By.XPath("//div/a[starts-with(@title,'" + protocol + "')]/preceding-sibling::a"));
-                        int protocolNodeCount = 0;
-                        while (currentEle != null)
-                        {
-                            if (currentEle.GetAttribute("class").Equals("toc_collapsed"))
-                            {
-                                IWebElement itemLink = currentEle.FindElement(By.XPath("./following::a"));
-                                if (itemLink.GetAttribute("title").StartsWith("[MS-"))
-                                {
-                                    protocolNodeCount++;
-                                    if (protocolNodeCount >= 2)
-                                    {
-                                        // All the current protocol's toc items are recorded.
-                                        // Complete the loop
-                                        break;
-                                    }
-                                }
-                                Util.Click(currentEle);
-                                //Wait until the sub menu expands
-                                do
-                                {
-                                    System.Threading.Thread.Sleep(2000);
-                                } while (!currentEle.GetAttribute("class").Equals("toc_expanded"));
-                            }
-                            //If the sub menu has been expanded, no action.
-                            else if (currentEle.GetAttribute("class").Equals("toc_expanded"))
-                            {
-                                IWebElement itemLink = currentEle.FindElement(By.XPath("./following::a"));
-                                if (itemLink.GetAttribute("title").StartsWith("[MS-"))
-                                {
-                                    protocolNodeCount++;
-
-                                    if (protocolNodeCount >= 2)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                            else if (!currentEle.GetAttribute("title").Equals(string.Empty) && currentEle.GetAttribute("title") != null)
-                            {
-                                sw.WriteLine(currentEle.GetAttribute("href"));
-                            }
-                            else
-                            {
-                                break;
-                            }
-                            try
-                            {
-                                currentEle = currentEle.FindElement(By.XPath("./following::a"));
-                            }
-                            catch (NoSuchElementException)
-                            {
-                                currentEle = null;
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                string tdName = Util.webDriver.Title.Split(':')[0];
-                webPageExportingStatusText.Text = "Recording URLs for " + tdName + "...";
-                webPageExportingStatusText.Refresh();
-                using (StreamWriter sw = new StreamWriter(outputPath.Text + "\\" + tdName + ".txt"))
-                {
-                    sw.WriteLine(Util.EntryUrl);
-                    foreach (string webpageUrl in Util.TOCItems.Values)
-                    {
-                        sw.WriteLine(webpageUrl);
-                    }
+                    sw.WriteLine(webpageUrl.ToString());
                 }
             }
 
@@ -129,7 +62,7 @@ namespace TDWebPageListGenerator
         {
             if (Util.webDriver == null)
             {
-            Util.webDriver = new ChromeDriver(System.IO.Directory.GetCurrentDirectory() + "\\AxeScripts\\");
+                Util.webDriver = new ChromeDriver(System.IO.Directory.GetCurrentDirectory() + "\\AxeScripts\\");
             }
             if (protocolEntryUrl.Text.Equals(string.Empty))
             {
@@ -138,71 +71,57 @@ namespace TDWebPageListGenerator
             else
             {
                 tocItemlList.Items.Clear();
-                Util.TOCItems.Clear();
                 protocolListImportingStatusText.Text = "Importing TOC item list...";
                 protocolListImportingStatusText.Refresh();
                 Util.webDriver.Navigate().GoToUrl(Util.EntryUrl);
                 IWebElement entryEle = Util.webDriver.FindElement(By.CssSelector("div.toclevel1>a:nth-child(2)"));
                 string itemName = entryEle.Text.Split(':')[0];
-                if (!itemName.StartsWith("[MS-"))
-                {
-                    //Entry item does not begin with [MS-, which means its child items are protocol items starting with [MS-
-                    int protocolCount = 0;
-                    var wait = new WebDriverWait(Util.webDriver, TimeSpan.FromSeconds(20));
-                    wait.Until(ExpectedConditions.ElementExists(By.XPath("//div[@data-toclevel='2']")));
-                    //Check whether all the protocols are included.
-                    while (protocolCount != Util.webDriver.FindElements(By.XPath("//div[@data-toclevel='2']")).Count)
-                    {
-                        protocolCount = Util.webDriver.FindElements(By.XPath("//div[@data-toclevel='2']")).Count;
-                        System.Threading.Thread.Sleep(3000);
-                    }
-                    for (int i = 0; i < protocolCount; i++)
-                    {
-                        IWebElement tdEntryEle = Util.webDriver.FindElement(By.XPath("//div[@data-toclevel='1']/following::div[@data-toclevel='2'][" + (int)(i + 1) + "]"));
-                        string tdName = tdEntryEle.Text;
 
-                        tocItemlList.Items.Add(tdName.Split(':')[0]);
-                        Util.TOCItems.Add(tdName, tdEntryEle.GetAttribute("href"));
-                    }
-                }
-                else
+                IWebElement currentEle = Util.FindElement(By.CssSelector("div.current>a"));
+                while (currentEle != null)
                 {
-                    string tdName = "Entry Page: " + Util.webDriver.Title.Split(':')[0];
-                    tocItemlList.Items.Add(tdName, true);
-                    Util.TOCItems.Add(tdName, Util.EntryUrl);
-
-                    IWebElement currentEle = Util.FindElement(By.CssSelector("div.toclevel2>a"));
-                    while (currentEle != null)
+                    if (currentEle.GetAttribute("class").Equals("toc_collapsed"))
                     {
-                        if (currentEle.GetAttribute("class").Equals("toc_collapsed"))
+                        int followingCount = currentEle.FindElements(By.XPath("./following::a")).Count;
+                        Util.Click(currentEle);
+                        //Wait until the sub menu expands
+                        System.Threading.Thread.Sleep(1000);
+                        while (!currentEle.GetAttribute("class").Equals("toc_expanded")
+                           || currentEle.FindElements(By.XPath("./following::a")).Count == followingCount)
                         {
-                            Util.Click(currentEle);
-                            //Wait until the sub menu expands
-                            do
-                            {
-                                System.Threading.Thread.Sleep(2000);
-                            } while (!currentEle.GetAttribute("class").Equals("toc_expanded"));
+                            System.Threading.Thread.Sleep(1000);
                         }
-                        else if (!currentEle.GetAttribute("title").Equals(string.Empty) && currentEle.GetAttribute("title") != null)
+                    }
+                    else if (!currentEle.GetAttribute("title").Equals(string.Empty) && currentEle.GetAttribute("title") != null)
+                    {
+                        if (tocItemlList.Items.Count == 1)
                         {
-                            tocItemlList.Items.Add(currentEle.Text, true);
-                            Util.TOCItems.Add(currentEle.Text, currentEle.GetAttribute("href"));
+                            if (!tocItemlList.Items.Contains(currentEle.GetAttribute("href")))
+                            {
+                                tocItemlList.Items.Add(currentEle.GetAttribute("href"), true);
+                            }
                         }
                         else
                         {
-                            break;
+                            tocItemlList.Items.Add(currentEle.GetAttribute("href"), true);
                         }
-                        try
+                        //The responding time after clicking collapse arrows of the following elements are a bit long,will loop
+                        if (currentEle.GetAttribute("title").Equals("Overview Documents") || currentEle.GetAttribute("title").Equals("Technical Documents"))
                         {
-                            currentEle = currentEle.FindElement(By.XPath("./following::a"));
-                        }
-                        catch (NoSuchElementException)
-                        {
-                            currentEle = null;
+                            while (Util.FindElement(currentEle, By.XPath("./following::a")) == null)
+                            {
+                                System.Threading.Thread.Sleep(1000);
+                            }
                         }
                     }
-                    Util.MultipleProtocolURLsImported = false;
+
+                    currentEle = Util.FindElement(currentEle, By.XPath("./following::a"));
+                    if (currentEle != null && Util.FindElement(currentEle, By.XPath("./parent::div[@data-toclevel]")) == null)
+                    {
+                        break;
+                    }
                 }
+
                 protocolNameText.Text = Util.webDriver.Title;
                 itemCountText.Text = "Total items: " + tocItemlList.Items.Count.ToString();
                 protocolListImportingStatusText.Text = "TOC item list is generated!";
@@ -249,17 +168,11 @@ namespace TDWebPageListGenerator
             {
                 selectedFile = dialog.FileName;
                 StreamReader sr = File.OpenText(selectedFile);
-                Util.MultipleProtocolURLsImported = false;
                 tocItemlList.Items.Clear();
-                Util.TOCItems.Clear();
                 while (sr.Peek() >= 0)
                 {
                     string currURL = sr.ReadLine();
                     tocItemlList.Items.Add(currURL, true);
-                    if (!Util.TOCItems.ContainsKey(currURL))
-                    {
-                        Util.TOCItems.Add(currURL, currURL);
-                    }
                 }
             }
             itemCountText.Text = "Total items: " + tocItemlList.Items.Count.ToString();
@@ -268,15 +181,43 @@ namespace TDWebPageListGenerator
         private void testPages_Click(object sender, EventArgs e)
         {
             DateTime oldT = DateTime.Now;
+            testStatus.Text = "Writing URLs into Grunt file...";
+            testStatus.Refresh();
             Util.ClearConfigureFile();
-            for (int i= tocItemlList.CheckedItems.Count-1; i>=0;i--)
+            for (int i = tocItemlList.CheckedItems.Count - 1; i >= 0; i--)
             {
-                Util.ConfigureTestUrls(Util.TOCItems[tocItemlList.CheckedItems[i].ToString()]);
+                Util.ConfigureTestUrls(tocItemlList.CheckedItems[i].ToString());
             }
-            //foreach (string section in tocItemlList.CheckedItems)
-            //{
-            //    Util.ConfigureTestUrls(Util.TOCItems[section]);
-            //}
+            List<string> ruleList = new List<string>();
+            if (testRuleGridView.Visible)
+            {
+                for (int j = 0; j < testRuleGridView.RowCount; j++)
+                {
+                    if (testRuleGridView.Rows[j].Cells[0].Value.ToString().Equals(Boolean.TrueString))
+                    {
+                        ruleList.Add(testRuleGridView.Rows[j].Cells[1].Value.ToString());
+                    }
+                }
+                if (ruleList.Count > 0)
+                {
+                    Util.SetTestRules(ruleList);
+                }
+                else
+                {
+                    MessageBox.Show("No rule is selected", "Warning");
+                    return;
+                }
+            }
+            else
+            {
+                //Set the default test rules
+                ruleList.Add("color-contrast");
+                ruleList.Add("image-alt");
+                ruleList.Add("link-name");
+                Util.SetTestRules(ruleList);
+            }
+            testStatus.Text = "Start to test...";
+            testStatus.Refresh();
             Process p = new Process();
             p.StartInfo.UseShellExecute = false;
             p.StartInfo.RedirectStandardOutput = true;
@@ -288,6 +229,8 @@ namespace TDWebPageListGenerator
 
             p.WaitForExit();
             DateTime newT = DateTime.Now;
+            testStatus.Text = "Testing completed!";
+            testStatus.Refresh();
             MessageBox.Show(string.Format("Test completed. Result path: {0}. Time cost: {1}", System.Environment.CurrentDirectory + "\\Results\\", (newT - oldT).ToString()));
         }
 
@@ -308,6 +251,40 @@ namespace TDWebPageListGenerator
             string pathValue = System.Environment.GetEnvironmentVariable("PATH");
             pathValue += ";" + System.Environment.CurrentDirectory + "\\AxeScripts";
             System.Environment.SetEnvironmentVariable("PATH", pathValue);
+        }
+
+        private void configureRules_Click(object sender, EventArgs e)
+        {
+            DataTable dt = new DataTable("ruleTable");
+
+            dt.Columns.Add(new DataColumn("Check", typeof(Boolean)));
+
+            dt.Columns.Add(new DataColumn("Id", typeof(string)));
+            dt.Columns.Add(new DataColumn("Description", typeof(string)));
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load("AxeRules.xml");
+
+            XmlNodeList nodes = doc.GetElementsByTagName("Rule");
+            foreach (XmlNode xnode in nodes)
+            {
+                DataRow row = dt.NewRow();
+                row["Id"] = xnode.SelectSingleNode("child::Id").InnerText;
+                //Set the default check rules
+                if (row["Id"].Equals("color-contrast") || row["Id"].Equals("image-alt") || row["Id"].Equals("link-name") || row["Id"].Equals("skip-link"))
+                {
+                    row["Check"] = true;
+                }
+                row["Description"] = xnode.SelectSingleNode("child::Description").InnerText;
+
+                dt.Rows.Add(row);
+            }
+
+            DataSet ds = new DataSet("newDS");
+            ds.Tables.Add(dt);
+
+            testRuleGridView.DataSource = ds.Tables[0];
+            testRuleGridView.Visible = true;
         }
     }
 }

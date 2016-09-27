@@ -30,7 +30,7 @@ module.exports = function (grunt) {
 				.then(function () {
 				    axeBuilder(driver)
                         //Choose which rules to test
-                        .withRules(['image-alt','color-contrast'])
+                        .withRules([])
 						.analyze(function (result) {
 						    var oldContent = '';
 						    if (grunt.file.exists(resultFileName)) {

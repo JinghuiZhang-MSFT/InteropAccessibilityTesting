@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<AxeRules>
+  <Rule>
+    <Id>accesskeys</Id>
+    <Description>Ensures every accesskey attribute value is unique</Description>
+  </Rule>
+  <Rule>
+    <Id>area-alt</Id>
+    <Description>Ensures &lt;area&gt; elements of image maps have alternate text</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-allowed-attr</Id>
+    <Description>Ensures ARIA attributes are allowed for an element&apos;s role</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-required-attr</Id>
+    <Description>Ensures elements with ARIA roles have all required ARIA attributes</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-required-children</Id>
+    <Description>Ensures elements with an ARIA role that require child roles contain them</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-required-parent</Id>
+    <Description>Ensures elements with an ARIA role that require parent roles are contained by them</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-roles</Id>
+    <Description>Ensures all elements with a role attribute use a valid value</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-valid-attr-value</Id>
+    <Description>Ensures all ARIA attributes have valid values</Description>
+  </Rule>
+  <Rule>
+    <Id>aria-valid-attr</Id>
+    <Description>Ensures attributes that begin with aria- are valid ARIA attributes</Description>
+  </Rule>
+  <Rule>
+    <Id>audio-caption</Id>
+    <Description>Ensures &lt;audio&gt; elements have captions</Description>
+  </Rule>
+  <Rule>
+    <Id>blink</Id>
+    <Description>Ensures &lt;blink&gt; elements are not used</Description>
+  </Rule>
+  <Rule>
+    <Id>button-name</Id>
+    <Description>Ensures buttons have discernible text</Description>
+  </Rule>
+  <Rule>
+    <Id>bypass</Id>
+    <Description>Ensures each page has at least one mechanism for a user to bypass navigation and jump straight to the content</Description>
+  </Rule>
+  <Rule>
+    <Id>checkboxgroup</Id>
+    <Description>Ensures related &lt;input type=&quot;checkbox&quot;&gt; elements have a group and that that group designation is consistent</Description>
+  </Rule>
+  <Rule>
+    <Id>color-contrast</Id>
+    <Description>Ensures the contrast between foreground and background colors meets WCAG 2 AA contrast ratio thresholds</Description>
+  </Rule>
+  <Rule>
+    <Id>definition-list</Id>
+    <Description>Ensures &lt;dl&gt; elements are structured correctly</Description>
+  </Rule>
+  <Rule>
+    <Id>dlitem</Id>
+    <Description>Ensures &lt;dt&gt; and &lt;dd&gt; elements are contained by a &lt;dl&gt;</Description>
+  </Rule>
+  <Rule>
+    <Id>document-title</Id>
+    <Description>Ensures each HTML document contains a non-empty &lt;title&gt; element</Description>
+  </Rule>
+  <Rule>
+    <Id>duplicate-id</Id>
+    <Description>Ensures every id attribute value is unique</Description>
+  </Rule>
+  <Rule>
+    <Id>empty-heading</Id>
+    <Description>Ensures headings have discernible text</Description>
+  </Rule>
+  <Rule>
+    <Id>frame-title</Id>
+    <Description>Ensures &lt;iframe&gt; and &lt;frame&gt; elements contain a unique and non-empty title attribute</Description>
+  </Rule>
+  <Rule>
+    <Id>heading-order</Id>
+    <Description>Ensures the order of headings is semantically correct</Description>
+  </Rule>
+  <Rule>
+    <Id>html-has-lang</Id>
+    <Description>Ensures every HTML document has a lang attribute</Description>
+  </Rule>
+  <Rule>
+    <Id>html-lang-valid</Id>
+    <Description>Ensures the lang attribute of the &lt;html&gt; element has a valid value</Description>
+  </Rule>
+  <Rule>
+    <Id>image-altmeaning</Id>
+    <Description>Ensures &lt;img&gt; elements have meaningful alternative text</Description>
+  </Rule>
+  <Rule>
+    <Id>image-alt</Id>
+    <Description>Ensures &lt;img&gt; elements have alternate text or a role of none or presentation</Description>
+  </Rule>
+  <Rule>
+    <Id>image-redundant-alt</Id>
+    <Description>Ensure button and link text is not repeated as image alternative</Description>
+  </Rule>
+  <Rule>
+    <Id>input-image-alt</Id>
+    <Description>Ensures &lt;input type=&quot;image&quot;&gt; elements have alternate text</Description>
+  </Rule>
+  <Rule>
+    <Id>label-title-only</Id>
+    <Description>Ensures that every form element is not solely labeled using the title or aria-describedby attributes</Description>
+  </Rule>
+  <Rule>
+    <Id>label</Id>
+    <Description>Ensures every form element has a label</Description>
+  </Rule>
+  <Rule>
+    <Id>layout-table</Id>
+    <Description>Ensures presentational &lt;table&gt; elements do not use &lt;th&gt;, &lt;caption&gt; elements or the summary attribute</Description>
+  </Rule>
+  <Rule>
+    <Id>link-in-text-block</Id>
+    <Description>Links can be distinguished without relying on color</Description>
+  </Rule>
+  <Rule>
+    <Id>link-name</Id>
+    <Description>Ensures links have discernible text</Description>
+  </Rule>
+  <Rule>
+    <Id>list</Id>
+    <Description>Ensures that lists are structured correctly</Description>
+  </Rule>
+  <Rule>
+    <Id>listitem</Id>
+    <Description>Ensures &lt;li&gt; elements are used semantically</Description>
+  </Rule>
+  <Rule>
+    <Id>marquee</Id>
+    <Description>Ensures &lt;marquee&gt; elements are not used</Description>
+  </Rule>
+  <Rule>
+    <Id>meta-refresh</Id>
+    <Description>Ensures &lt;meta http-equiv=&quot;refresh&quot;&gt; is not used</Description>
+  </Rule>
+  <Rule>
+    <Id>meta-viewport-large</Id>
+    <Description>Ensures &lt;meta name=&quot;viewport&quot;&gt; can scale a significant amount</Description>
+  </Rule>
+  <Rule>
+    <Id>meta-viewport</Id>
+    <Description>Ensures &lt;meta name=&quot;viewport&quot;&gt; does not disable text scaling and zooming</Description>
+  </Rule>
+  <Rule>
+    <Id>object-alt</Id>
+    <Description>Ensures &lt;object&gt; elements have alternate text</Description>
+  </Rule>
+  <Rule>
+    <Id>radiogroup</Id>
+    <Description>Ensures related &lt;input type=&quot;radio&quot;&gt; elements have a group and that the group designation is consistent</Description>
+  </Rule>
+  <Rule>
+    <Id>region</Id>
+    <Description>Ensures all content is contained within a landmark region</Description>
+  </Rule>
+  <Rule>
+    <Id>scope-attr-valid</Id>
+    <Description>Ensures the scope attribute is used correctly on tables</Description>
+  </Rule>
+  <Rule>
+    <Id>server-side-image-map</Id>
+    <Description>Ensures that server-side image maps are not used</Description>
+  </Rule>
+  <Rule>
+    <Id>skip-link</Id>
+    <Description>Ensures the first link on the page is a skip link</Description>
+  </Rule>
+  <Rule>
+    <Id>tabindex</Id>
+    <Description>Ensures tabindex attribute values are not greater than 0</Description>
+  </Rule>
+  <Rule>
+    <Id>table-duplicate-name</Id>
+    <Description>Ensure that tables do not have the same summary and caption</Description>
+  </Rule>
+  <Rule>
+    <Id>table-fake-caption</Id>
+    <Description>Ensure that tables with a caption use the &lt;caption&gt; element.</Description>
+  </Rule>
+  <Rule>
+    <Id>td-has-header</Id>
+    <Description>Ensure that each non-empty data cell in a large table has one or more table headers</Description>
+  </Rule>
+  <Rule>
+    <Id>td-headers-attr</Id>
+    <Description>Ensure that each cell in a table using the headers refers to another cell in that table</Description>
+  </Rule>
+  <Rule>
+    <Id>th-has-data-cells</Id>
+    <Description>Ensure that each table header in a data table refers to data cells</Description>
+  </Rule>
+  <Rule>
+    <Id>valid-lang</Id>
+    <Description>Ensures lang attributes have valid values</Description>
+  </Rule>
+  <Rule>
+    <Id>video-caption</Id>
+    <Description>Ensures &lt;video&gt; elements have captions</Description>
+  </Rule>
+  <Rule>
+    <Id>video-description</Id>
+    <Description>Ensures &lt;video&gt; elements have audio descriptions</Description>
+  </Rule>
+</AxeRules>
