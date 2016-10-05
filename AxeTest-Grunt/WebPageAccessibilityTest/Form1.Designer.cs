@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.protocolEntryUrl = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,11 +44,15 @@
             this.protocolNameText = new System.Windows.Forms.TextBox();
             this.importURLList = new System.Windows.Forms.Button();
             this.testPages = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.testRuleGridView = new System.Windows.Forms.DataGridView();
+            this.testStatus = new System.Windows.Forms.TextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.testRuleGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // protocolEntryUrl
             // 
-            this.protocolEntryUrl.Location = new System.Drawing.Point(157, 24);
+            this.protocolEntryUrl.Location = new System.Drawing.Point(184, 24);
             this.protocolEntryUrl.Multiline = true;
             this.protocolEntryUrl.Name = "protocolEntryUrl";
             this.protocolEntryUrl.Size = new System.Drawing.Size(267, 40);
@@ -74,15 +79,15 @@
             // 
             // outputPath
             // 
-            this.outputPath.Location = new System.Drawing.Point(220, 343);
+            this.outputPath.Location = new System.Drawing.Point(184, 346);
             this.outputPath.Multiline = true;
             this.outputPath.Name = "outputPath";
-            this.outputPath.Size = new System.Drawing.Size(203, 58);
+            this.outputPath.Size = new System.Drawing.Size(325, 41);
             this.outputPath.TabIndex = 3;
             // 
             // pathBrowseButton
             // 
-            this.pathBrowseButton.Location = new System.Drawing.Point(2, 376);
+            this.pathBrowseButton.Location = new System.Drawing.Point(3, 362);
             this.pathBrowseButton.Name = "pathBrowseButton";
             this.pathBrowseButton.Size = new System.Drawing.Size(75, 25);
             this.pathBrowseButton.TabIndex = 4;
@@ -107,7 +112,7 @@
             this.webPageExportingStatusText.Enabled = false;
             this.webPageExportingStatusText.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.webPageExportingStatusText.ForeColor = System.Drawing.Color.DarkGreen;
-            this.webPageExportingStatusText.Location = new System.Drawing.Point(128, 423);
+            this.webPageExportingStatusText.Location = new System.Drawing.Point(184, 423);
             this.webPageExportingStatusText.Name = "webPageExportingStatusText";
             this.webPageExportingStatusText.Size = new System.Drawing.Size(272, 13);
             this.webPageExportingStatusText.TabIndex = 6;
@@ -141,7 +146,7 @@
             this.tocItemlList.Location = new System.Drawing.Point(184, 90);
             this.tocItemlList.MultiColumn = true;
             this.tocItemlList.Name = "tocItemlList";
-            this.tocItemlList.Size = new System.Drawing.Size(250, 214);
+            this.tocItemlList.Size = new System.Drawing.Size(546, 214);
             this.tocItemlList.TabIndex = 11;
             this.tocItemlList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tocItemList_ItemCheck);
             // 
@@ -188,13 +193,55 @@
             // testPages
             // 
             this.testPages.Enabled = false;
-            this.testPages.Location = new System.Drawing.Point(2, 450);
+            this.testPages.Location = new System.Drawing.Point(3, 495);
             this.testPages.Name = "testPages";
             this.testPages.Size = new System.Drawing.Size(75, 23);
             this.testPages.TabIndex = 17;
-            this.testPages.Text = "Testing start";
+            this.testPages.Text = "Start to test";
             this.testPages.UseVisualStyleBackColor = true;
             this.testPages.Click += new System.EventHandler(this.testPages_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 450);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(109, 23);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "Configure test rules";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.configureRules_Click);
+            // 
+            // testRuleGridView
+            // 
+            this.testRuleGridView.AllowUserToAddRows = false;
+            this.testRuleGridView.AllowUserToDeleteRows = false;
+            this.testRuleGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.testRuleGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.testRuleGridView.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.testRuleGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.testRuleGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.testRuleGridView.DefaultCellStyle = dataGridViewCellStyle5;
+            this.testRuleGridView.Location = new System.Drawing.Point(174, 450);
+            this.testRuleGridView.Name = "testRuleGridView";
+            this.testRuleGridView.Size = new System.Drawing.Size(556, 150);
+            this.testRuleGridView.TabIndex = 19;
+            this.testRuleGridView.Visible = false;
+            // 
+            // testStatus
+            // 
+            this.testStatus.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.testStatus.Enabled = false;
+            this.testStatus.Location = new System.Drawing.Point(3, 534);
+            this.testStatus.Name = "testStatus";
+            this.testStatus.Size = new System.Drawing.Size(155, 13);
+            this.testStatus.TabIndex = 20;
             // 
             // Form1
             // 
@@ -202,7 +249,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(436, 485);
+            this.ClientSize = new System.Drawing.Size(742, 603);
+            this.Controls.Add(this.testStatus);
+            this.Controls.Add(this.testRuleGridView);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.testPages);
             this.Controls.Add(this.importURLList);
             this.Controls.Add(this.protocolNameText);
@@ -222,6 +272,7 @@
             this.Text = "WebPageAccessibilityTest";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.testRuleGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,6 +295,9 @@
         private System.Windows.Forms.TextBox protocolNameText;
         private System.Windows.Forms.Button importURLList;
         private System.Windows.Forms.Button testPages;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView testRuleGridView;
+        private System.Windows.Forms.TextBox testStatus;
     }
 }
 
