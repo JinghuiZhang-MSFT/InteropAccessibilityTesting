@@ -271,7 +271,7 @@ namespace TDWebPageListGenerator
                 DataRow row = dt.NewRow();
                 row["Id"] = xnode.SelectSingleNode("child::Id").InnerText;
                 //Set the default check rules
-                if (row["Id"].Equals("color-contrast") || row["Id"].Equals("image-alt") || row["Id"].Equals("link-name") || row["Id"].Equals("skip-link"))
+                if (row["Id"].Equals("color-contrast") || row["Id"].Equals("image-alt") || row["Id"].Equals("link-name"))
                 {
                     row["Check"] = true;
                 }
